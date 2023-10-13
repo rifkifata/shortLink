@@ -3,17 +3,8 @@ const app = express()
 const db = require('@cyclic.sh/dynamodb')
 const request = require('request')
 const {
-    momen
-} = require('mongodb')
-const {
     ObjectID
 } = require('mongodb')
-const {
-    filter
-} = require('async')
-const {
-    response
-} = require('express')
 
 'use strict';
 require('dotenv').config()
@@ -32,7 +23,7 @@ app.use(function (req, res, next) {
 
 
 // Create or Update an item
-app.post('/:col', async (req, res) => {
+app.post('/:key', async (req, res) => {
     console.log(req.body)
     const now = new Date();
     let date = {
@@ -46,7 +37,6 @@ app.post('/:col', async (req, res) => {
 
     const objectId = new ObjectID();
     const col = req.params.col
-    //const key = req.params.key
     let key = objectId.toString()
 
     console.log(`from collection: ${col} post key: ${key} with params ${JSON.stringify(req.params)}`)
