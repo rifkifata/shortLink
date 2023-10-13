@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
 const db = require('@cyclic.sh/dynamodb')
-const request = require('request')
+const axios = require('axios')
 const {
     ObjectID
 } = require('mongodb')
-
+const now = new Date();
 'use strict';
 require('dotenv').config()
 
@@ -21,18 +21,32 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.post('/', async (req, res) => {
+    const shortedPath = req.body.shortedPath
+    const sourcePath = req.body.sourcePath
 
-// Create or Update an item
-app.post('/:key', async (req, res) => {
-    console.log(req.body)
-    const now = new Date();
-    let date = {
+
+    if (!shortedPath) {
+        res.json(errorMessage("shortedPath")).end
+    } else if (!sourcePath) {
+        res.json(errorMessage("sourcePath")).end
+    }
+
+    axios.get(sourcePath)
+        .catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+                res.json(errorMessage("notFound")).end
+            }
+        });
+
+    const body = {
+        "sourcePath": req.body.sourcePath,
+        "shortedPath": req.body.shortedPath,
         "createdAt": now.toISOString(),
         "updatedAt": now.toISOString()
-    }
-    const isi = {
-        ...req.body,
-        ...date
     }
 
     const objectId = new ObjectID();
@@ -145,3 +159,10 @@ const port = process.env.PORT || 3000
 app.listen(port, () => {
     console.log(`index.js listening on ${port}`)
 })
+
+function errorMessage(err) {
+    if (err == "destPath") return "Destination Path Cannot be Empty"
+    if (err == "sourcePath") return "Source Path Cannot be Empty"
+    //if (err == "realPath") return "Source Path Cannot be Empty"
+
+}
