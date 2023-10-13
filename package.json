@@ -1,0 +1,26 @@
+{
+  "name": "shortlink",
+  "version": "1.0.0",
+  "description": "to shorten link",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rifkifata/shortLink.git"
+  },
+  "keywords": [
+    "short-link",
+    "backend"
+  ],
+  "author": "Teuku",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rifkifata/shortLink/issues"
+  },
+  "homepage": "https://github.com/rifkifata/shortLink#readme",
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
