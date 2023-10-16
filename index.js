@@ -219,8 +219,8 @@ async function Get(col, key) {
     }
 }
 
-function CheckURL(path) {
-    axios.get(path)
+async function CheckURL(path) {
+    await axios.get(path)
         .catch(function (error) {
             if (error.response) {
                 console.log(error.response.data)
