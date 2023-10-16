@@ -11,7 +11,6 @@ const {
 } = require('express/lib/response')
 const now = new Date()
 'use strict'
-require('dotenv').config()
 
 app.set('view engine', 'ejs')
 app.use(express.json())
