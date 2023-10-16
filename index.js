@@ -56,6 +56,7 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(sourcePath)
+    console.log(checkUrl)
     if (checkUrl) {
         res.json(checkUrl).end()
     }
