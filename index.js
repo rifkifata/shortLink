@@ -31,15 +31,21 @@ app.post('/short/', async (req, res) => {
     const shortedPath = req.body.shortedPath
     const sourcePath = req.body.sourcePath
     const author = req.body.author
+    let info
 
     if (!shortedPath) {
-        res.json(ErrorMessage("emptyShortedPath")).end()
-    } else if (!sourcePath) {
-        res.json(ErrorMessage("emptySourcePath")).end()
+        info = res.json(ErrorMessage("emptyShortedPath")).end()
+        res.sendStatus(400)
+        console.log(info)
+    }
+    if (!sourcePath) {
+        info = res.json(ErrorMessage("emptySourcePath")).end()
+        res.sendStatus(400)
+        console.log(info)
     }
 
     //check duplicate
-    const duplicate = Get(col, shortedPath)
+    const duplicate = await Get(col, shortedPath)
     if (duplicate == false) {
         const info = {
             "Info: ": ErrorMessage("failedPost")
@@ -49,7 +55,7 @@ app.post('/short/', async (req, res) => {
     }
 
     //check the url notfound
-    const checkUrl = CheckURL(sourcePath)
+    const checkUrl = await CheckURL(sourcePath)
     if (checkUrl) {
         res.json(checkUrl).end()
     }
@@ -62,7 +68,7 @@ app.post('/short/', async (req, res) => {
         "updatedAt": now.toISOString()
     }
 
-    const post = Post(col, shortedPath, body)
+    const post = await Post(col, shortedPath, body)
 
     if (post == true) {
         const info = {
