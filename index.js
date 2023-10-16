@@ -35,55 +35,55 @@ app.post('/short/', async (req, res) => {
 
     if (!shortedPath) {
         info = res.json(ErrorMessage("emptyShortedPath")).end()
-        res.sendStatus(400)
+        res.sendStatus(404)
         console.log(info)
     }
     if (!sourcePath) {
         info = res.json(ErrorMessage("emptySourcePath")).end()
-        res.sendStatus(400)
-        console.log(info)
-    }
-
-    //check duplicate
-    const duplicate = await Get(col, shortedPath)
-    if (duplicate == false) {
-        const info = {
-            "Info: ": ErrorMessage("failedPost")
-        }
-        res.json(info).end()
-        console.log(info)
-    }
-
-    //check the url notfound
-    const checkUrl = await CheckURL(sourcePath)
-    if (checkUrl) {
-        res.json(checkUrl).end()
-    }
-
-    const body = {
-        "sourcePath": sourcePath,
-        "shortedPath": shortedPath,
-        "author": req.body.author ? author : null,
-        "createdAt": now.toISOString(),
-        "updatedAt": now.toISOString()
-    }
-
-    const post = await Post(col, shortedPath, body)
-
-    if (post == true) {
-        const info = {
-            "Info: ": SuccessMessage("successPost", shortedPath)
-        }
-        res.json(post).end()
-        console.log(info)
-    } else {
-        const info = {
-            "Info: ": ErrorMessage("failedPost")
-        }
         res.sendStatus(404)
-        res.json(info).end()
-        console.log(`${info} /shorted/${JSON.stringify(shortedPath)} `)
+        console.log(info)
     }
+
+    // //check duplicate
+    // const duplicate = await Get(col, shortedPath)
+    // if (duplicate == false) {
+    //     const info = {
+    //         "Info: ": ErrorMessage("failedPost")
+    //     }
+    //     res.json(info).end()
+    //     console.log(info)
+    // }
+
+    // //check the url notfound
+    // const checkUrl = await CheckURL(sourcePath)
+    // if (checkUrl) {
+    //     res.json(checkUrl).end()
+    // }
+
+    // const body = {
+    //     "sourcePath": sourcePath,
+    //     "shortedPath": shortedPath,
+    //     "author": req.body.author ? author : null,
+    //     "createdAt": now.toISOString(),
+    //     "updatedAt": now.toISOString()
+    // }
+
+    // const post = await Post(col, shortedPath, body)
+
+    // if (post == true) {
+    //     const info = {
+    //         "Info: ": SuccessMessage("successPost", shortedPath)
+    //     }
+    //     res.json(post).end()
+    //     console.log(info)
+    // } else {
+    //     const info = {
+    //         "Info: ": ErrorMessage("failedPost")
+    //     }
+    //     res.sendStatus(404)
+    //     res.json(info).end()
+    //     console.log(`${info} /shorted/${JSON.stringify(shortedPath)} `)
+    // }
 })
 
 app.delete('/short/:shortedPath', async (req, res) => {
