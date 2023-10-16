@@ -194,7 +194,7 @@ async function Delete(col, key) {
     }
 }
 
-function Post(col, key, body) {
+async function Post(col, key, body) {
     try {
         return await db.collection(col).set(key, body)
     } catch (e) {
