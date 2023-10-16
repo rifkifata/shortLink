@@ -32,6 +32,7 @@ app.post('/short/', async (req, res) => {
     const sourcePath = req.body.sourcePath
     const author = req.body.author
     let info
+    const srcPathProtocol = addProtocol(sourcePath)
 
     if (!shortedPath) {
         res.sendStatus(404)
@@ -55,19 +56,19 @@ app.post('/short/', async (req, res) => {
     // }
 
     //check the url notfound
-    const checkUrl = await CheckURL(sourcePath)
+    const checkUrl = await CheckURL(srcPathProtocol)
     console.log(checkUrl)
-    if (checkUrl) {
-        res.json(checkUrl).end()
-    }
-
-    // const body = {
-    //     "sourcePath": sourcePath,
-    //     "shortedPath": shortedPath,
-    //     "author": req.body.author ? author : null,
-    //     "createdAt": now.toISOString(),
-    //     "updatedAt": now.toISOString()
+    // if (checkUrl) {
+    //     res.json(checkUrl).end()
     // }
+
+    const body = {
+        "sourcePath": sourcePath,
+        "shortedPath": shortedPath,
+        "author": req.body.author ? author : null,
+        "createdAt": now.toISOString(),
+        "updatedAt": now.toISOString()
+    }
 
     // const post = await Post(col, shortedPath, body)
 
@@ -229,4 +230,10 @@ async function CheckURL(path) {
         console.log(error)
         return ErrorMessage("failedUrl")
     })
+}
+
+function addProtocol(path) {
+    if (path.toLowerCase().include("https")) {
+        return path
+    } else return `https://${path}`
 }
