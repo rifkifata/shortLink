@@ -227,9 +227,6 @@ async function CheckURL(path) {
         url: path,
     }).catch((error) => {
         console.log(error)
-        console.log(error.response.data)
-        console.log(error.response.status)
-        console.log(error.response.headers)
         return ErrorMessage("failedUrl")
     })
 }
