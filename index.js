@@ -1,34 +1,30 @@
 const express = require('express')
 const app = express()
-const async = require("async");
+const async = require("async")
 const db = require('@cyclic.sh/dynamodb')
 const axios = require('axios')
-const {
-    ObjectID
-} = require('mongodb')
-const e = require('express')
 const {
     param
 } = require('express/lib/request')
 const {
     get
 } = require('express/lib/response')
-const now = new Date();
-'use strict';
+const now = new Date()
+'use strict'
 require('dotenv').config()
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs')
 app.use(express.json())
 app.use(express.urlencoded({
     extended: true
 }))
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-//
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
+
 app.post('/short/', async (req, res) => {
     console.log(Message("inProgress", "POST", ""))
 
@@ -144,7 +140,7 @@ app.get('/short/:key', async (req, res) => {
 
 //     currentArray.map(item => {
 //         Object.assign(item, item.props)
-//         delete item.props;
+//         delete item.props
 //         return item
 //     })
 
