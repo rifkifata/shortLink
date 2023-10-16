@@ -31,21 +31,20 @@ app.post('/short/', async (req, res) => {
     const shortedPath = req.body.shortedPath
     const sourcePath = req.body.sourcePath
     const author = req.body.author
-    let info
     const srcPathProtocol = addProtocol(sourcePath)
 
     if (!shortedPath) {
         res.sendStatus(404)
-        info = res.json(ErrorMessage("emptyShortedPath")).end()
-        console.log(info)
+        res.json(ErrorMessage("emptyShortedPath")).end()
+        console.log(ErrorMessage("emptyShortedPath"))
     }
     if (!sourcePath) {
         res.sendStatus(404)
-        info = res.json(ErrorMessage("emptySourcePath")).end()
-        console.log(info)
+        res.json(ErrorMessage("emptySourcePath")).end()
+        console.log(ErrorMessage("emptyShortedPath"))
     }
 
-    //check duplicate
+    // Check duplicate
     // const duplicate = await Get(col, shortedPath)
     // if (duplicate == false) {
     //     const info = {
@@ -57,10 +56,10 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
-    console.log(checkUrl)
-    // if (checkUrl) {
-    //     res.json(checkUrl).end()
-    // }
+    if (checkUrl) {
+        console.log(checkUrl)
+        res.json(checkUrl).end()
+    }
 
     const body = {
         "sourcePath": sourcePath,
@@ -70,23 +69,20 @@ app.post('/short/', async (req, res) => {
         "updatedAt": now.toISOString()
     }
 
-    // const post = await Post(col, shortedPath, body)
+    const post = await Post(col, shortedPath, body)
 
-    // if (post == true) {
-    //     const info = {
-    //         "Info: ": SuccessMessage("successPost", shortedPath)
-    //     }
-    //     res.json(post).end()
-    //     console.log(info)
-    // } else {
-    //     const info = {
-    //         "Info: ": ErrorMessage("failedPost")
-    //     }
-    //     res.sendStatus(404)
-    //     res.json(info).end()
-    //     console.log(`${info} /shorted/${JSON.stringify(shortedPath)} `)
-    // }
+    if (post == true) {
+        SuccessMessage("successPost", shortedPath)
+        res.json(body).end()
+        console.log(SuccessMessage("successPost", shortedPath))
+    } else {
+        res.sendStatus(404)
+        res.json(ErrorMessage("failedPost")).end()
+        console.log(ErrorMessage("failedPost"))
+    }
 })
+
+//ganti semua jadi "message" : " " 
 
 app.delete('/short/:shortedPath', async (req, res) => {
     const key = req.params.shortedPath
@@ -171,12 +167,24 @@ app.listen(port, () => {
 })
 
 function ErrorMessage(err) {
-    if (err == "emptyShortedPath") return "Shorted Path Cannot be Empty"
-    if (err == "emptySourcePath") return "Source Path Cannot be Empty"
-    if (err == "failedDelete") return "Failed to Delete, Data not Found"
-    if (err == "failedPost") return "Failed to Post, Duplicate Data"
-    if (err == "failedGet") return "Failed to Get, Data not Found"
-    if (err == "failedUrl") return "URL Error"
+    if (err == "emptyShortedPath") return {
+        "message": "Shorted Path Cannot be Empty"
+    }
+    if (err == "emptySourcePath") return {
+        "message": "Source Path Cannot be Empty"
+    }
+    if (err == "failedDelete") return {
+        "message": "Failed to Delete, Data not Found"
+    }
+    if (err == "failedPost") return {
+        "message": "Failed to Post, Duplicate Data"
+    }
+    if (err == "failedGet") return {
+        "message": "Failed to Get, Data not Found"
+    }
+    if (err == "failedUrl") return {
+        "message": "URL Error"
+    }
 }
 
 function Message(msg, progress, params) {
@@ -227,7 +235,6 @@ async function CheckURL(path) {
         method: 'get',
         url: path,
     }).catch((error) => {
-        console.log(error)
         return ErrorMessage("failedUrl")
     })
 }
