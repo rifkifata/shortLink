@@ -222,13 +222,14 @@ async function Get(col, key) {
 }
 
 async function CheckURL(path) {
-    await axios.get(path)
-        .catch(function (error) {
-            if (error.response) {
-                console.log(error.response.data)
-                console.log(error.response.status)
-                console.log(error.response.headers)
-                return ErrorMessage("failedUrl")
-            }
-        })
+    return axios({
+        method: 'get',
+        url: path,
+    }).catch((error) => {
+        console.log(error)
+        console.log(error.response.data)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+        return ErrorMessage("failedUrl")
+    })
 }
