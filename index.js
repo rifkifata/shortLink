@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const async = require("async");
 const db = require('@cyclic.sh/dynamodb')
 const axios = require('axios')
 const {
@@ -185,7 +186,7 @@ function SuccessMessage(msg, params) {
     if (msg == "successGet") return `Success Get ${JSON.stringify(params)}`
 }
 
-function Delete(col, key) {
+async function Delete(col, key) {
     try {
         return await db.collection(col).delete(key)
     } catch (e) {
@@ -201,7 +202,7 @@ function Post(col, key, body) {
     }
 }
 
-function Get(col, key) {
+async function Get(col, key) {
     try {
         const item = await db.collection(col).get(key)
         let props = item.props
