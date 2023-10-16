@@ -26,13 +26,6 @@ app.use(function (req, res, next) {
 
 app.post('/short/', async (req, res) => {
     console.log(Message("inProgress", "POST", ""))
-
-    const col = "short"
-    const shortedPath = req.body.shortedPath
-    const sourcePath = req.body.sourcePath
-    const author = req.body.author
-    const srcPathProtocol = addProtocol(sourcePath)
-
     if (!shortedPath) {
         res.sendStatus(404)
         res.json(ErrorMessage("emptyShortedPath")).end()
@@ -43,6 +36,13 @@ app.post('/short/', async (req, res) => {
         res.json(ErrorMessage("emptySourcePath")).end()
         console.log(ErrorMessage("emptyShortedPath"))
     }
+
+    const col = "short"
+    const shortedPath = req.body.shortedPath
+    const sourcePath = req.body.sourcePath
+    const author = req.body.author
+    const srcPathProtocol = addProtocol(sourcePath)
+
 
     // Check duplicate
     // const duplicate = await Get(col, shortedPath)
