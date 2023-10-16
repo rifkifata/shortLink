@@ -34,17 +34,17 @@ app.post('/short/', async (req, res) => {
     let info
 
     if (!shortedPath) {
-        info = res.json(ErrorMessage("emptyShortedPath")).end()
         res.sendStatus(404)
+        info = res.json(ErrorMessage("emptyShortedPath")).end()
         console.log(info)
     }
     if (!sourcePath) {
-        info = res.json(ErrorMessage("emptySourcePath")).end()
         res.sendStatus(404)
+        info = res.json(ErrorMessage("emptySourcePath")).end()
         console.log(info)
     }
 
-    // //check duplicate
+    //check duplicate
     // const duplicate = await Get(col, shortedPath)
     // if (duplicate == false) {
     //     const info = {
@@ -54,11 +54,11 @@ app.post('/short/', async (req, res) => {
     //     console.log(info)
     // }
 
-    // //check the url notfound
-    // const checkUrl = await CheckURL(sourcePath)
-    // if (checkUrl) {
-    //     res.json(checkUrl).end()
-    // }
+    //check the url notfound
+    const checkUrl = await CheckURL(sourcePath)
+    if (checkUrl) {
+        res.json(checkUrl).end()
+    }
 
     // const body = {
     //     "sourcePath": sourcePath,
