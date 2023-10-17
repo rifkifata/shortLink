@@ -57,7 +57,7 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
-
+    console.log(checkUrl.status)
     if (!checkUrl.status == 200) {
         console.log(false)
         console.log(checkUrl)
