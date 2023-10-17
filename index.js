@@ -72,9 +72,6 @@ app.post('/short/', async (req, res) => {
         console.log(post)
     }
 
-
-
-
     // if (post == true) {
     //     SuccessMessage("successPost", shortedPath)
     //     res.json(body).end()
@@ -251,12 +248,13 @@ async function CheckURL(path) {
         method: 'get',
         url: path,
     }).catch((error) => {
+        console.log(error.status)
         return false
     })
 }
 
 async function addProtocol(path) {
-    if (path.toLowerCase().includes("https")) {
+    if (path.toLowerCase().includes("https://") || path.toLowerCase().includes("http://")) {
         return path
     } else return `https://${path}`
 }
