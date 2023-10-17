@@ -70,16 +70,16 @@ app.post('/short/', async (req, res) => {
         "updatedAt": now.toISOString()
     }
     const post = await Post(col, shortedPath, body)
-    console.log(post)
-    // if (post == true) {
-    //     SuccessMessage("successPost", shortedPath)
-    //     res.json(body).end()
-    //     console.log(SuccessMessage("successPost", shortedPath))
-    // } else {
-    //     res.sendStatus(404)
-    //     res.json(ErrorMessage("failedPost")).end()
-    //     console.log(ErrorMessage("failedPost"))
-    // }
+
+    if (post.props.shortedPath) {
+        SuccessMessage("successPost", shortedPath)
+        res.json(post).end()
+        console.log(SuccessMessage("successPost", shortedPath))
+    } else {
+        res.status(404)
+        res.json(ErrorMessage("failedPost")).end()
+        console.log(ErrorMessage("failedPost"))
+    }
 })
 
 app.delete('/short/:shortedPath', async (req, res) => {
