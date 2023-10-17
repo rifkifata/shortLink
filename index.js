@@ -85,11 +85,10 @@ app.post('/short/', async (req, res) => {
 
 app.get('/short/:key', async (req, res) => {
     const col = "short"
-    const key = req.params.shortedPath
+    const key = req.params.key
     console.log(Message("inProgress", "GET", req.params.shortedPath))
 
     const get = Get(col, key)
-    console.log("ini get " + get)
 
     // if (get == true) {
     //     const info = {
@@ -213,12 +212,6 @@ async function Delete(col, key) {
 }
 
 async function Post(col, key, body) {
-    // try {
-    //     return await db.collection(col).set(key, body)
-    // } catch (e) {
-    //     return e.message
-    // }
-
     try {
         return await db.collection(col).set(key, body)
     } catch (e) {
