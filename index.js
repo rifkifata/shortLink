@@ -254,7 +254,7 @@ async function CheckURL(path) {
 }
 
 async function addProtocol(path) {
-    if (path.toLowerCase().includes("https://") || path.toLowerCase().includes("http://")) {
+    if (path.toString().toLowerCase().includes("https://") || path.toString().toLowerCase().includes("http://")) {
         return path
     } else return `https://${path}`
 }
