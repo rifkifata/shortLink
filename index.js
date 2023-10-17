@@ -31,7 +31,6 @@ app.post('/short/', async (req, res) => {
     const shortedPath = req.body.shortedPath
     const sourcePath = req.body.sourcePath
     const author = req.body.author
-    let promises = []
 
     if (!shortedPath) {
         res.sendStatus(404)
@@ -45,7 +44,6 @@ app.post('/short/', async (req, res) => {
     }
 
     const srcPathProtocol = await addProtocol(sourcePath)
-    promises.push(srcPathProtocol)
     // Check duplicate
     // const duplicate = await Get(col, shortedPath)
     // if (duplicate == false) {
@@ -58,7 +56,6 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
-    promises.push(checkUrl)
 
     if (!checkUrl.status == 200) {
         console.log(checkUrl)
@@ -75,11 +72,6 @@ app.post('/short/', async (req, res) => {
     }
 
     const post = await Post(col, shortedPath, body)
-    promises.push(post)
-
-    Promise.all(promises).then(([a, b]) => {
-        console.log("done")
-    });
 
     // if (post == true) {
     //     SuccessMessage("successPost", shortedPath)
