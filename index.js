@@ -59,19 +59,18 @@ app.post('/short/', async (req, res) => {
     const checkUrl = await CheckURL(srcPathProtocol)
     if (checkUrl == false) {
         res.status(404)
+        console.log(ErrorMessage("failedUrl"))
         res.json(ErrorMessage("failedUrl")).end()
-    } else {
-        const body = {
-            "sourcePath": sourcePath,
-            "shortedPath": shortedPath,
-            "author": req.body.author ? author : null,
-            "createdAt": now.toISOString(),
-            "updatedAt": now.toISOString()
-        }
-        const post = await Post(col, shortedPath, body)
-        console.log(post)
     }
-
+    const body = {
+        "sourcePath": sourcePath,
+        "shortedPath": shortedPath,
+        "author": req.body.author ? author : null,
+        "createdAt": now.toISOString(),
+        "updatedAt": now.toISOString()
+    }
+    const post = await Post(col, shortedPath, body)
+    console.log(post)
     // if (post == true) {
     //     SuccessMessage("successPost", shortedPath)
     //     res.json(body).end()
