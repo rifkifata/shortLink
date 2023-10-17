@@ -9,6 +9,7 @@ const {
 const {
     get
 } = require('express/lib/response')
+const res = require('express/lib/response')
 const now = new Date()
 'use strict'
 
@@ -227,16 +228,17 @@ async function Post(col, key, body) {
 
 async function Get(col, key) {
     try {
-        const item = await db.collection(col).get(key)
-        let props = item.props
-        delete props.updated
-        delete props.created
-        let newitem = {
-            key: key,
-            collection: col,
-            ...props
-        }
-        return newitem
+        await db.collection(col).get(key).then(function (result) {
+            let props = result.props
+            delete props.updated
+            delete props.created
+            let newitem = {
+                key: key,
+                collection: col,
+                ...props
+            }
+            return newitem
+        })
     } catch (e) {
         return e.message
     }
