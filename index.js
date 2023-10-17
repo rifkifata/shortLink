@@ -60,6 +60,7 @@ app.post('/short/', async (req, res) => {
 
     if (!checkUrl.status == 200) {
         console.log(checkUrl)
+        res.sendStatus(404)
         res.json(checkUrl).end()
     }
 
@@ -71,7 +72,7 @@ app.post('/short/', async (req, res) => {
         "updatedAt": now.toISOString()
     }
 
-    // const post = await Post(col, shortedPath, body)
+    const post = await Post(col, shortedPath, body)
 
     // if (post == true) {
     //     SuccessMessage("successPost", shortedPath)
@@ -214,11 +215,18 @@ async function Delete(col, key) {
 }
 
 async function Post(col, key, body) {
+    // try {
+    //     return await db.collection(col).set(key, body)
+    // } catch (e) {
+    //     return e.message
+    // }
+
     try {
-        return await db.collection(col).set(key, body)
+        console.log(await db.collection(col).set(key, body))
     } catch (e) {
         return e.message
     }
+    return ""
 }
 
 async function Get(col, key) {
