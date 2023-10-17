@@ -103,6 +103,7 @@ app.delete('/short/:shortedPath', async (req, res) => {
     const key = req.params.shortedPath
     console.log(Message("inProgress", "DELETE", key))
     const del = Delete("shorted", key)
+    console.log(del)
     if (del == true) {
         res.status(200)
         res.json(SuccessMessage("successDelete", key)).end()
@@ -113,31 +114,31 @@ app.delete('/short/:shortedPath', async (req, res) => {
         console.log(ErrorMessage("failedDelete"))
     }
 })
-// //get All
-// app.get('/getall/:col', async (req, res) => {
-//     const col = req.params.col
-//     console.log(`list collection: ${col} with params: ${JSON.stringify(req.params)}`)
-//     const items = await db.collection(col).list()
-//     let result = items.results.map(a => a.key)
-//     let currentArray = []
 
-//     await Promise.all(
-//         result.map(async (item) => {
-//             currentArray.push(await db.collection(col).get(item))
-//         })
-//     )
+app.get('/all/:col', async (req, res) => {
+    const col = req.params.col
+    console.log(`list collection: ${col} with params: ${JSON.stringify(req.params)}`)
+    const items = await db.collection(col).list()
+    let result = items.results.map(a => a.key)
+    let currentArray = []
 
-//     currentArray.map(item => {
-//         Object.assign(item, item.props)
-//         delete item.props
-//         return item
-//     })
+    await Promise.all(
+        result.map(async (item) => {
+            currentArray.push(await db.collection(col).get(item))
+        })
+    )
 
-//     let finalResult = {
-//         "results": currentArray
-//     }
-//     res.json(finalResult).end()
-// })
+    currentArray.map(item => {
+        Object.assign(item, item.props)
+        delete item.props
+        return item
+    })
+
+    let finalResult = {
+        "results": currentArray
+    }
+    res.json(finalResult).end()
+})
 
 // Catch all handler for all other request.
 app.use('*', (req, res) => {
