@@ -46,14 +46,12 @@ app.post('/short/', async (req, res) => {
 
     const srcPathProtocol = await addProtocol(sourcePath)
     // Check duplicate
-    // const duplicate = await Get(col, shortedPath)
-    // if (duplicate == false) {
-    //     const info = {
-    //         "Info: ": ErrorMessage("failedPost")
-    //     }
-    //     res.json(info).end()
-    //     console.log(info)
-    // }
+    const duplicate = await Get(col, shortedPath)
+    if (duplicate.shortedPath == shortedPath) {
+        res.status(404)
+        res.json(ErrorMessage("failedPost")).end()
+        console.log(ErrorMessage("failedPost"))
+    }
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
@@ -96,7 +94,7 @@ app.get('/short/:key', async (req, res) => {
     } else {
         res.sendStatus(404)
         res.json(ErrorMessage("failedGet")).end()
-        console.log(ErrorMessage("failedPost"))
+        console.log(ErrorMessage("failedGet"))
     }
 })
 
@@ -169,7 +167,7 @@ function ErrorMessage(err) {
         "message": "Failed to Delete, Data not Found"
     }
     if (err == "failedPost") return {
-        "message": "Failed to Post, Duplicate Data"
+        "message": "Failed to Post, Shorted Link Already Exist"
     }
     if (err == "failedGet") return {
         "message": "Failed to Get, Data not Found"
@@ -187,13 +185,13 @@ function Message(msg, progress, params) {
 
 function SuccessMessage(msg, params) {
     if (msg == "successDelete") return {
-        "message": `Success Delete ${JSON.stringify(params)}`
+        "message": "Success Delete params"
     }
     if (msg == "successPost") return {
-        "message": `Success Post ${JSON.stringify(params)}`
+        "message": "Success Post params"
     }
     if (msg == "successGet") return {
-        "message": `Success Get ${JSON.stringify(params)}`
+        "message": "Success Get params"
     }
 }
 
