@@ -32,6 +32,7 @@ app.post('/short/', async (req, res) => {
     const sourcePath = req.body.sourcePath
     const author = req.body.author
 
+
     if (!shortedPath) {
         res.sendStatus(404)
         res.json(ErrorMessage("emptyShortedPath")).end()
@@ -61,17 +62,20 @@ app.post('/short/', async (req, res) => {
         console.log(checkUrl)
         res.sendStatus(404)
         res.json(checkUrl).end()
+    } else {
+        const body = {
+            "sourcePath": sourcePath,
+            "shortedPath": shortedPath,
+            "author": req.body.author ? author : null,
+            "createdAt": now.toISOString(),
+            "updatedAt": now.toISOString()
+        }
+        const post = await Post(col, shortedPath, body)
+        console.log(post)
     }
 
-    const body = {
-        "sourcePath": sourcePath,
-        "shortedPath": shortedPath,
-        "author": req.body.author ? author : null,
-        "createdAt": now.toISOString(),
-        "updatedAt": now.toISOString()
-    }
 
-    const post = await Post(col, shortedPath, body)
+
 
     // if (post == true) {
     //     SuccessMessage("successPost", shortedPath)
