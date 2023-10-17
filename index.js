@@ -89,7 +89,7 @@ app.get('/short/:key', async (req, res) => {
     console.log(Message("inProgress", "GET", req.params.shortedPath))
 
     const get = Get(col, key)
-    console.log(get)
+    console.log("ini get " + get)
 
     // if (get == true) {
     //     const info = {
@@ -228,17 +228,17 @@ async function Post(col, key, body) {
 
 async function Get(col, key) {
     try {
-        await db.collection(col).get(key).then(function (result) {
-            let props = result.props
-            delete props.updated
-            delete props.created
-            let newitem = {
-                key: key,
-                collection: col,
-                ...props
-            }
-            return newitem
-        })
+        const item = await db.collection(col).get(key)
+        let props = item.props
+        delete props.updated
+        delete props.created
+        let newitem = {
+            key: key,
+            collection: col,
+            ...props
+        }
+        console.log(newitem)
+        return newitem
     } catch (e) {
         return e.message
     }
