@@ -31,6 +31,7 @@ app.post('/short/', async (req, res) => {
     const shortedPath = req.body.shortedPath
     const sourcePath = req.body.sourcePath
     const author = req.body.author
+    let promises = []
 
     if (!shortedPath) {
         res.sendStatus(404)
@@ -43,8 +44,8 @@ app.post('/short/', async (req, res) => {
         console.log(ErrorMessage("emptySourcePath"))
     }
 
-    const srcPathProtocol = addProtocol(sourcePath)
-
+    const srcPathProtocol = await addProtocol(sourcePath)
+    promises.push(srcPathProtocol)
     // Check duplicate
     // const duplicate = await Get(col, shortedPath)
     // if (duplicate == false) {
@@ -57,6 +58,7 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
+    promises.push(checkUrl)
 
     if (!checkUrl.status == 200) {
         console.log(checkUrl)
@@ -73,6 +75,11 @@ app.post('/short/', async (req, res) => {
     }
 
     const post = await Post(col, shortedPath, body)
+    promises.push(post)
+
+    Promise.all(promises).then(([a, b]) => {
+        console.log("done")
+    });
 
     // if (post == true) {
     //     SuccessMessage("successPost", shortedPath)
@@ -222,11 +229,20 @@ async function Post(col, key, body) {
     // }
 
     try {
-        console.log(await db.collection(col).set(key, body))
+        await db.collection(col).set(key, body)
     } catch (e) {
         return e.message
     }
-    return ""
+
+
+
+    return new Promise((resolve, reject) => {
+        CheckUrl(query, (successResponse) => {
+            resolve(successResponse);
+        }, (errorResponse) => {
+            reject(errorResponse);
+        });
+    });
 }
 
 async function Get(col, key) {
@@ -255,7 +271,7 @@ async function CheckURL(path) {
     })
 }
 
-function addProtocol(path) {
+async function addProtocol(path) {
     if (path.toLowerCase().includes("https")) {
         return path
     } else return `https://${path}`
