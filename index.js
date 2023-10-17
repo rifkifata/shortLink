@@ -34,12 +34,12 @@ app.post('/short/', async (req, res) => {
 
 
     if (!shortedPath) {
-        res.sendStatus(404)
+        res.status(404)
         res.json(ErrorMessage("emptyShortedPath")).end()
         console.log(ErrorMessage("emptyShortedPath"))
     }
     if (!sourcePath) {
-        res.sendStatus(404)
+        res.status(404)
         res.json(ErrorMessage("emptySourcePath")).end()
         console.log(ErrorMessage("emptySourcePath"))
     }
@@ -58,7 +58,7 @@ app.post('/short/', async (req, res) => {
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
     if (checkUrl == false) {
-        res.sendStatus(404)
+        res.status(404)
         res.json(ErrorMessage("failedUrl")).end()
     } else {
         const body = {
