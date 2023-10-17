@@ -60,6 +60,7 @@ app.post('/short/', async (req, res) => {
         console.log(ErrorMessage("failedUrl"))
         res.json(ErrorMessage("failedUrl")).end()
     }
+
     const body = {
         "sourcePath": sourcePath,
         "shortedPath": shortedPath,
@@ -67,8 +68,8 @@ app.post('/short/', async (req, res) => {
         "createdAt": now.toISOString(),
         "updatedAt": now.toISOString()
     }
-    const post = await Post(col, shortedPath, body)
 
+    const post = await Post(col, shortedPath, body)
     if (post.props.shortedPath) {
         res.status(200)
         res.json(post).end()
@@ -103,18 +104,13 @@ app.delete('/short/:shortedPath', async (req, res) => {
     console.log(Message("inProgress", "DELETE", key))
     const del = Delete("shorted", key)
     if (del == true) {
-        const info = {
-            "Info: ": SuccessMessage("successDelete", key)
-        }
-        res.json(info).end()
-        console.log(info)
+        res.status(200)
+        res.json(SuccessMessage("successDelete", key)).end()
+        console.log(SuccessMessage("successDelete", key))
     } else {
-        const info = {
-            "Info: ": ErrorMessage("failedDelete")
-        }
-        res.sendStatus(404)
-        res.json(info).end()
-        console.log(`${info} /shorted/${JSON.stringify(key)} `)
+        res.status(404)
+        res.json(ErrorMessage("failedDelete")).end()
+        console.log(ErrorMessage("failedDelete"))
     }
 })
 // //get All
