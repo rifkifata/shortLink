@@ -233,16 +233,6 @@ async function Post(col, key, body) {
     } catch (e) {
         return e.message
     }
-
-
-
-    return new Promise((resolve, reject) => {
-        CheckUrl(query, (successResponse) => {
-            resolve(successResponse);
-        }, (errorResponse) => {
-            reject(errorResponse);
-        });
-    });
 }
 
 async function Get(col, key) {
