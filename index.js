@@ -59,10 +59,12 @@ app.post('/short/', async (req, res) => {
     const checkUrl = await CheckURL(srcPathProtocol)
 
     if (!checkUrl.status == 200) {
+        console.log(false)
         console.log(checkUrl)
         res.sendStatus(404)
         res.json(checkUrl).end()
     } else {
+        console.log(true)
         const body = {
             "sourcePath": sourcePath,
             "shortedPath": shortedPath,
