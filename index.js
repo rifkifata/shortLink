@@ -219,7 +219,7 @@ async function Post(col, key, body) {
     // }
 
     try {
-        await db.collection(col).set(key, body)
+        return await db.collection(col).set(key, body)
     } catch (e) {
         return e.message
     }
