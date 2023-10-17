@@ -32,7 +32,6 @@ app.post('/short/', async (req, res) => {
     const sourcePath = req.body.sourcePath
     const author = req.body.author
 
-
     if (!shortedPath) {
         res.status(404)
         res.json(ErrorMessage("emptyShortedPath")).end()
@@ -73,6 +72,7 @@ app.post('/short/', async (req, res) => {
 
     if (post.props.shortedPath) {
         SuccessMessage("successPost", shortedPath)
+        res.status(200)
         res.json(post).end()
         console.log(SuccessMessage("successPost", shortedPath))
     } else {
@@ -80,6 +80,30 @@ app.post('/short/', async (req, res) => {
         res.json(ErrorMessage("failedPost")).end()
         console.log(ErrorMessage("failedPost"))
     }
+})
+
+app.get('/short/:key', async (req, res) => {
+    const col = "short"
+    const key = req.params.shortedPath
+    console.log(Message("inProgress", "GET", req.params.shortedPath))
+
+    const get = Get(col, key)
+    console.log(get)
+
+    // if (get == true) {
+    //     const info = {
+    //         "Info: ": SuccessMessage("successGet", key)
+    //     }
+    //     res.json(get).end()
+    //     console.log(info)
+    // } else {
+    //     const info = {
+    //         "Info: ": ErrorMessage("failedGet")
+    //     }
+    //     res.sendStatus(404)
+    //     res.json(info).end()
+    //     console.log(`${info} /shorted/${JSON.stringify(key)} `)
+    // }
 })
 
 app.delete('/short/:shortedPath', async (req, res) => {
@@ -101,30 +125,6 @@ app.delete('/short/:shortedPath', async (req, res) => {
         console.log(`${info} /shorted/${JSON.stringify(key)} `)
     }
 })
-
-app.get('/short/:key', async (req, res) => {
-    const col = "short"
-    const key = req.params.shortedPath
-    console.log(Message("inProgress", "GET", req.params.shortedPath))
-
-    const get = Get(col, key)
-
-    if (get == true) {
-        const info = {
-            "Info: ": SuccessMessage("successGet", key)
-        }
-        res.json(get).end()
-        console.log(info)
-    } else {
-        const info = {
-            "Info: ": ErrorMessage("failedGet")
-        }
-        res.sendStatus(404)
-        res.json(info).end()
-        console.log(`${info} /shorted/${JSON.stringify(key)} `)
-    }
-})
-
 // //get All
 // app.get('/getall/:col', async (req, res) => {
 //     const col = req.params.col
