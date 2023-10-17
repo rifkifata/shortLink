@@ -57,10 +57,13 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
-    if (!checkUrl.status == 200) {
-        console.log(checkUrl)
-        res.json(checkUrl).end()
-    }
+    console.log(checkUrl)
+    console.log(checkUrl.status)
+
+    // if (!checkUrl.status == 200) {
+    //     console.log(checkUrl)
+    //     res.json(checkUrl).end()
+    // }
 
     const body = {
         "sourcePath": sourcePath,
@@ -70,20 +73,18 @@ app.post('/short/', async (req, res) => {
         "updatedAt": now.toISOString()
     }
 
-    const post = await Post(col, shortedPath, body)
+    // const post = await Post(col, shortedPath, body)
 
-    if (post == true) {
-        SuccessMessage("successPost", shortedPath)
-        res.json(body).end()
-        console.log(SuccessMessage("successPost", shortedPath))
-    } else {
-        res.sendStatus(404)
-        res.json(ErrorMessage("failedPost")).end()
-        console.log(ErrorMessage("failedPost"))
-    }
+    // if (post == true) {
+    //     SuccessMessage("successPost", shortedPath)
+    //     res.json(body).end()
+    //     console.log(SuccessMessage("successPost", shortedPath))
+    // } else {
+    //     res.sendStatus(404)
+    //     res.json(ErrorMessage("failedPost")).end()
+    //     console.log(ErrorMessage("failedPost"))
+    // }
 })
-
-//ganti semua jadi "message" : " " 
 
 app.delete('/short/:shortedPath', async (req, res) => {
     const key = req.params.shortedPath
