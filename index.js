@@ -40,7 +40,7 @@ app.post('/short/', async (req, res) => {
     if (!sourcePath) {
         res.sendStatus(404)
         res.json(ErrorMessage("emptySourcePath")).end()
-        console.log(ErrorMessage("emptyShortedPath"))
+        console.log(ErrorMessage("emptySourcePath"))
     }
 
     const srcPathProtocol = addProtocol(sourcePath)
@@ -57,7 +57,7 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
-    if (checkUrl) {
+    if (!checkUrl.status == 200) {
         console.log(checkUrl)
         res.json(checkUrl).end()
     }
@@ -189,13 +189,21 @@ function ErrorMessage(err) {
 }
 
 function Message(msg, progress, params) {
-    if (msg == "inProgress") return `try to ${progress} ${params}`
+    if (msg == "inProgress") return {
+        "message": `try to ${progress} ${params}`
+    }
 }
 
 function SuccessMessage(msg, params) {
-    if (msg == "successDelete") return `Success Delete ${JSON.stringify(params)}`
-    if (msg == "successPost") return `Success Post ${JSON.stringify(params)}`
-    if (msg == "successGet") return `Success Get ${JSON.stringify(params)}`
+    if (msg == "successDelete") return {
+        "message": `Success Delete ${JSON.stringify(params)}`
+    }
+    if (msg == "successPost") return {
+        "message": `Success Post ${JSON.stringify(params)}`
+    }
+    if (msg == "successGet") return {
+        "message": `Success Get ${JSON.stringify(params)}`
+    }
 }
 
 async function Delete(col, key) {
