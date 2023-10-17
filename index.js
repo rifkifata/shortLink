@@ -57,13 +57,11 @@ app.post('/short/', async (req, res) => {
 
     //check the url notfound
     const checkUrl = await CheckURL(srcPathProtocol)
-    console.log(checkUrl)
-    console.log(checkUrl.status)
 
-    // if (!checkUrl.status == 200) {
-    //     console.log(checkUrl)
-    //     res.json(checkUrl).end()
-    // }
+    if (!checkUrl.status == 200) {
+        console.log(checkUrl)
+        res.json(checkUrl).end()
+    }
 
     const body = {
         "sourcePath": sourcePath,
