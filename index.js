@@ -72,7 +72,6 @@ app.post('/short/', async (req, res) => {
     const post = await Post(col, shortedPath, body)
 
     if (post.props.shortedPath) {
-        SuccessMessage("successPost", shortedPath)
         res.status(200)
         res.json(post).end()
         console.log(SuccessMessage("successPost", shortedPath))
@@ -88,22 +87,17 @@ app.get('/short/:key', async (req, res) => {
     const key = req.params.key
     console.log(Message("inProgress", "GET", req.params.shortedPath))
 
-    const get = Get(col, key)
+    const get = await Get(col, key)
 
-    // if (get == true) {
-    //     const info = {
-    //         "Info: ": SuccessMessage("successGet", key)
-    //     }
-    //     res.json(get).end()
-    //     console.log(info)
-    // } else {
-    //     const info = {
-    //         "Info: ": ErrorMessage("failedGet")
-    //     }
-    //     res.sendStatus(404)
-    //     res.json(info).end()
-    //     console.log(`${info} /shorted/${JSON.stringify(key)} `)
-    // }
+    if (get.shortedPath == key) {
+        res.status(200)
+        res.json(get).end()
+        console.log(SuccessMessage("successGet", key))
+    } else {
+        res.sendStatus(404)
+        res.json(ErrorMessage("failedGet")).end()
+        console.log(ErrorMessage("failedPost"))
+    }
 })
 
 app.delete('/short/:shortedPath', async (req, res) => {
