@@ -129,15 +129,15 @@ app.get('/all/short', async (req, res) => {
     const col = "short"
     const items = GetAll(col)
     res.json(items).end()
-    // if (get.shortedPath == key) {
-    //     res.status(200)
-    //     res.json(get).end()
-    //     console.log(SuccessMessage("successGet", key))
-    // } else {
-    //     res.status(404)
-    //     res.json(ErrorMessage("failedGet")).end()
-    //     console.log(ErrorMessage("failedGet"))
-    // }
+    if (items == {}) {
+        res.status(404)
+        res.json(ErrorMessage("failedGet")).end()
+        console.log(ErrorMessage("failedGet"))
+    } else {
+        res.status(200)
+        res.json(items).end()
+        console.log(SuccessMessage("successGet", key))
+    }
 })
 
 // Catch all handler for all other request.
@@ -245,14 +245,7 @@ async function GetAll(col) {
             return item
         })
 
-        console.log(currentArray)
-
-        // let finalResult = {
-        //     "results": currentArray
-        // } 
-
-        // return finalResult
-
+        return currentArray
     } catch (error) {
         return e.message
     }
