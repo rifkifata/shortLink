@@ -136,7 +136,7 @@ app.get('/all/short', async (req, res) => {
     } else {
         res.status(200)
         res.json(items).end()
-        console.log(SuccessMessage("successGet", key))
+        console.log(SuccessMessage("successGet", ""))
     }
 })
 
@@ -185,10 +185,10 @@ function SuccessMessage(msg, params) {
         "message": "Success Delete " + params
     }
     if (msg == "successPost") return {
-        "message": "Success Post params" + params
+        "message": "Success Post " + params
     }
     if (msg == "successGet") return {
-        "message": "Success Get params" + params
+        "message": "Success Get " + params
     }
 }
 
