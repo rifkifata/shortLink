@@ -231,8 +231,8 @@ async function GetAll(col) {
         const items = await db.collection(col).list()
         console.log("items getAll " + items)
 
-        // let result = items.results.map(a => a.key)
-        // console.log("result " + result)
+        let result = items.results.map(a => a.key)
+        console.log("result " + result)
         // let currentArray = []
 
         // await Promise.all(
