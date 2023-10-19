@@ -124,29 +124,21 @@ app.delete('/short/:shortedPath', async (req, res) => {
     }
 })
 
-app.get('/all/:col', async (req, res) => {
-    const col = req.params.col
-    console.log(`list collection: ${col} with params: ${JSON.stringify(req.params)}`)
-    const items = await db.collection(col).list()
-    let result = items.results.map(a => a.key)
-    let currentArray = []
-
-    await Promise.all(
-        result.map(async (item) => {
-            currentArray.push(await db.collection(col).get(item))
-        })
-    )
-
-    currentArray.map(item => {
-        Object.assign(item, item.props)
-        delete item.props
-        return item
-    })
-
-    let finalResult = {
-        "results": currentArray
-    }
-    res.json(finalResult).end()
+app.get('short/all/', async (req, res) => {
+    console.log(Message("inProgress", "GETALL", key))
+    const col = "short"
+    const items = GetAll(col)
+    console.log(items)
+    res.json(items).end()
+    // if (get.shortedPath == key) {
+    //     res.status(200)
+    //     res.json(get).end()
+    //     console.log(SuccessMessage("successGet", key))
+    // } else {
+    //     res.status(404)
+    //     res.json(ErrorMessage("failedGet")).end()
+    //     console.log(ErrorMessage("failedGet"))
+    // }
 })
 
 // Catch all handler for all other request.
@@ -231,6 +223,36 @@ async function Get(col, key) {
         console.log(newitem)
         return newitem
     } catch (e) {
+        return e.message
+    }
+}
+
+async function GetAll(col) {
+    try {
+        const items = await db.collection(col).list()
+
+        let result = items.results.map(a => a.key)
+        let currentArray = []
+
+        await Promise.all(
+            result.map(async (item) => {
+                currentArray.push(await db.collection(col).get(item))
+            })
+        )
+
+        currentArray.map(item => {
+            Object.assign(item, item.props)
+            delete item.props
+            return item
+        })
+
+        let finalResult = {
+            "results": currentArray
+        }
+
+        return finalResult
+
+    } catch (error) {
         return e.message
     }
 }
