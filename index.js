@@ -93,7 +93,7 @@ app.get('/short/:key', async (req, res) => {
         res.json(get).end()
         console.log(SuccessMessage("successGet", key))
     } else {
-        res.sendStatus(404)
+        res.status(404)
         res.json(ErrorMessage("failedGet")).end()
         console.log(ErrorMessage("failedGet"))
     }
@@ -101,9 +101,18 @@ app.get('/short/:key', async (req, res) => {
 
 app.delete('/short/:shortedPath', async (req, res) => {
     const key = req.params.shortedPath
+    const col = "short"
     console.log(Message("inProgress", "DELETE", key))
+
+    // Check Data
+    const data = await Get(col, key)
+    if (data.shortedPath == undefined) {
+        res.status(404)
+        res.json(ErrorMessage("failedGet")).end()
+        console.log(ErrorMessage("failedGet"))
+    }
+
     const del = await Delete("short", key)
-    console.log(del)
     if (del == true) {
         res.status(200)
         res.json(SuccessMessage("successDelete", key)).end()
@@ -182,13 +191,13 @@ function Message(msg, progress, params) {
 
 function SuccessMessage(msg, params) {
     if (msg == "successDelete") return {
-        "message": "Success Delete params"
+        "message": "Success Delete " + params
     }
     if (msg == "successPost") return {
-        "message": "Success Post params"
+        "message": "Success Post params" + params
     }
     if (msg == "successGet") return {
-        "message": "Success Get params"
+        "message": "Success Get params" + params
     }
 }
 
