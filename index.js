@@ -251,7 +251,7 @@ async function GetAll(col) {
 
         // let finalResult = {
         //     "results": currentArray
-        // }
+        // } 
 
         // return finalResult
 
