@@ -230,8 +230,10 @@ async function Get(col, key) {
 async function GetAll(col) {
     try {
         const items = await db.collection(col).list()
+        console.log("items getAll " + items)
 
         let result = items.results.map(a => a.key)
+        console.log("result " + result)
         let currentArray = []
 
         await Promise.all(
@@ -245,6 +247,8 @@ async function GetAll(col) {
             delete item.props
             return item
         })
+
+        console.log(currentArray)
 
         let finalResult = {
             "results": currentArray
