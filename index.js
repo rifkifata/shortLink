@@ -239,11 +239,11 @@ async function GetAll(col) {
             })
         )
 
-        // currentArray.map(item => {
-        //     Object.assign(item, item.props)
-        //     delete item.props
-        //     return item
-        // })
+        currentArray.map(item => {
+            Object.assign(item, item.props)
+            delete item.props
+            return item
+        })
 
         console.log(currentArray)
 
