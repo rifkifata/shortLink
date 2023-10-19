@@ -84,7 +84,7 @@ app.post('/short/', async (req, res) => {
 app.get('/short/:key', async (req, res) => {
     const col = "short"
     const key = req.params.key
-    console.log(Message("inProgress", "GET", req.params.shortedPath))
+    console.log(Message("inProgress", "GET", key))
 
     const get = await Get(col, key)
 
@@ -102,7 +102,7 @@ app.get('/short/:key', async (req, res) => {
 app.delete('/short/:shortedPath', async (req, res) => {
     const key = req.params.shortedPath
     console.log(Message("inProgress", "DELETE", key))
-    const del = Delete("shorted", key)
+    const del = await Delete("short", key)
     console.log(del)
     if (del == true) {
         res.status(200)
