@@ -124,7 +124,7 @@ app.delete('/short/:shortedPath', async (req, res) => {
     }
 })
 
-app.get('all/short/', async (req, res) => {
+app.get('/all/short', async (req, res) => {
     console.log(Message("inProgress", "GETALL", key))
     const col = "short"
     const items = GetAll(col)
