@@ -128,7 +128,6 @@ app.get('/all/short', async (req, res) => {
     console.log(Message("inProgress", "GETALL", ""))
     const col = "short"
     const items = GetAll(col)
-    console.log(items)
     res.json(items).end()
     // if (get.shortedPath == key) {
     //     res.status(200)
@@ -232,29 +231,29 @@ async function GetAll(col) {
         const items = await db.collection(col).list()
         console.log("items getAll " + items)
 
-        let result = items.results.map(a => a.key)
-        console.log("result " + result)
-        let currentArray = []
+        // let result = items.results.map(a => a.key)
+        // console.log("result " + result)
+        // let currentArray = []
 
-        await Promise.all(
-            result.map(async (item) => {
-                currentArray.push(await db.collection(col).get(item))
-            })
-        )
+        // await Promise.all(
+        //     result.map(async (item) => {
+        //         currentArray.push(await db.collection(col).get(item))
+        //     })
+        // )
 
-        currentArray.map(item => {
-            Object.assign(item, item.props)
-            delete item.props
-            return item
-        })
+        // currentArray.map(item => {
+        //     Object.assign(item, item.props)
+        //     delete item.props
+        //     return item
+        // })
 
-        console.log(currentArray)
+        // console.log(currentArray)
 
-        let finalResult = {
-            "results": currentArray
-        }
+        // let finalResult = {
+        //     "results": currentArray
+        // }
 
-        return finalResult
+        // return finalResult
 
     } catch (error) {
         return e.message
