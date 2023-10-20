@@ -128,15 +128,14 @@ app.get('/all/short', async (req, res) => {
     console.log(Message("inProgress", "GETALL", ""))
     const col = "short"
     const items = await GetAll(col)
-    console.log(items)
-    if (items == []) {
-        res.status(404)
-        res.json(ErrorMessage("failedGetAll")).end()
-        console.log(ErrorMessage("failedGetAll"))
-    } else {
+    if (Array.isArray(items) && items.length) {
         res.status(200)
         res.json(items).end()
         console.log(SuccessMessage("successGetAll", col))
+    } else {
+        res.status(404)
+        res.json(ErrorMessage("failedGetAll")).end()
+        console.log(ErrorMessage("failedGetAll"))
     }
 })
 
