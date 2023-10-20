@@ -128,14 +128,14 @@ app.get('/all/short', async (req, res) => {
     console.log(Message("inProgress", "GETALL", ""))
     const col = "short"
     const items = await GetAll(col)
-    if (items == {}) {
+    if (items == []) {
         res.status(404)
-        res.json(ErrorMessage("failedGet")).end()
-        console.log(ErrorMessage("failedGet"))
+        res.json(ErrorMessage("failedGetAll")).end()
+        console.log(ErrorMessage("failedGetAll"))
     } else {
         res.status(200)
         res.json(items).end()
-        console.log(SuccessMessage("successGet", ""))
+        console.log(SuccessMessage("successGetAll", col))
     }
 })
 
@@ -168,6 +168,9 @@ function ErrorMessage(err) {
     if (err == "failedGet") return {
         "message": "Failed to Get, Data not Found"
     }
+    if (err == "failedGetAll") return {
+        "message": "Failed to Get All, no Data Found"
+    }
     if (err == "failedUrl") return {
         "message": "URL Error"
     }
@@ -188,6 +191,9 @@ function SuccessMessage(msg, params) {
     }
     if (msg == "successGet") return {
         "message": "Success Get " + params
+    }
+    if (msg == "successGetAll") return {
+        "message": "Success Get All from Collection" + params
     }
 }
 
