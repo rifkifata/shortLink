@@ -62,7 +62,7 @@ app.post('/short/', async (req, res) => {
     }
 
     const body = {
-        "sourcePath": sourcePath,
+        "sourcePath": srcPathProtocol,
         "shortedPath": shortedPath,
         "author": req.body.author ? author : null,
         "createdAt": now.toISOString(),
