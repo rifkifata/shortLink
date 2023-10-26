@@ -217,9 +217,12 @@ async function Delete(col, key) {
 
 async function Post(col, key, body) {
     try {
-        return await db.collection(col).set(key, body)
+        //return await db.collection(col).set(key, body)
+        const db =await db.collection(col).set(key, body)
+        console.log(db)
     } catch (e) {
-        return e.message
+        //return e.message
+        console.log(e.message)
     }
 }
 
