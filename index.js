@@ -32,16 +32,20 @@ app.post('/short/', async (req, res) => {
     const shortedPath = req.body.shortedPath
     const sourcePath = req.body.sourcePath
     const author = req.body.author
+    let validation
+    let post
 
     if (!shortedPath) {
         res.status(404)
         res.json(ErrorMessage("emptyShortedPath")).end()
         console.log(ErrorMessage("emptyShortedPath"))
+        validation = false
     }
     if (!sourcePath) {
         res.status(404)
         res.json(ErrorMessage("emptySourcePath")).end()
         console.log(ErrorMessage("emptySourcePath"))
+        validation = false
     }
 
     const srcPathProtocol = await addProtocol(sourcePath)
@@ -51,6 +55,7 @@ app.post('/short/', async (req, res) => {
         res.status(404)
         res.json(ErrorMessage("failedPost")).end()
         console.log(ErrorMessage("failedPost"))
+        validation = false
     }
 
     //check the url notfound
@@ -59,6 +64,7 @@ app.post('/short/', async (req, res) => {
         res.status(404)
         console.log(ErrorMessage("failedUrl"))
         res.json(ErrorMessage("failedUrl")).end()
+        validation = false
     }
 
     const body = {
@@ -69,7 +75,9 @@ app.post('/short/', async (req, res) => {
         "updatedAt": now.toISOString()
     }
 
-    const post = await Post(col, shortedPath, body)
+    if (!validation == false) {
+        post = await Post(col, shortedPath, body)
+    }
     if (post.props.shortedPath) {
         res.status(200)
         res.json(post).end()
