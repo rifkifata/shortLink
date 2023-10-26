@@ -79,7 +79,7 @@ app.post('/short/', async (req, res) => {
         post = await Post(col, shortedPath, body)
     }
 
-    console.log(props)
+    console.log(post)
     if (post.props.shortedPath) {
         res.status(200)
         res.json(post).end()
